@@ -7,6 +7,11 @@ extern "C" {
 }
 
 int main(int argc, char** argv) {
+    if (argc != 2) {
+        std::cout << "Usage: " << argv[0] << " <path to ROM>" << std::endl;
+        return 1;
+    }
+
     // Init graphics
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_Window* window = SDL_CreateWindow("chip8emu", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 64, 32, SDL_WINDOW_RESIZABLE);
@@ -22,8 +27,6 @@ int main(int argc, char** argv) {
 
     SDL_Event event;
     while (true) {
-        uint32_t startTime = SDL_GetTicks();
-
         if (!chip8.emulateCycle()) {
             std::cout << "Interpreter exited due to error" << std::endl;
             break;
@@ -89,10 +92,7 @@ int main(int argc, char** argv) {
         SDL_RenderCopy(renderer, texture, NULL, NULL);
         SDL_RenderPresent(renderer);
 
-        usleep(16666);
-
-        std::cout << "Frame time: " << SDL_GetTicks() - startTime << "\n";
-        //usleep(1666);
+        usleep(1200);
     }
     return 0;
 }
